@@ -1,11 +1,9 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-export default function HomeScreen() {
+export default function SignUpScreen() {
     return (
         <View style={styles.container}>
-            <View>
-               <Text>This is the home screen</Text>
-            </View>
+            <Text> This is the sign up screen</Text>
         </View>
     );
 }
