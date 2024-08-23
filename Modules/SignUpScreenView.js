@@ -1,42 +1,42 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
-import icon from './assets/icon.png';
-import backgroundGif from './assets/background_signup.gif';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import icon from '../assets/icon.png';
+import backgroundGif from '../assets/background_signup.gif';
 
 export default function SignUpScreen() {
+    const navigation = useNavigation(); // Initialize useNavigation
+
     const { width, height } = Dimensions.get('window');
 
-    // Load the custom font
     const [fontsLoaded] = useFonts({
-        'EuclidCircularA-Bold': require('./assets/fonts/EuclidCircularABold.ttf'),
-        'EuclidCircularA-SemiBold': require('./assets/fonts/EuclidCircularASemiBold.ttf'),
+        'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
+        'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
     });
 
-    // Show a loading indicator until the font is loaded
     if (!fontsLoaded) {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
 
     return (
         <View style={styles.container}>
-            <Image
-                source={backgroundGif}
-                style={[styles.backgroundGif, { width, height }]}
-                resizeMode="cover"
-            />
+            <Image source={backgroundGif} style={[styles.backgroundGif, { width, height }]} resizeMode="cover" />
             <View style={styles.overlay}>
                 <View style={styles.spacer} />
-                <Image
-                    source={icon}
-                    style={styles.logo}
-                />
+                <Image source={icon} style={styles.logo} />
                 <View style={styles.spacer} />
                 <Text style={styles.title}>Are you entering as</Text>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('ChooseSignUp')} // Navigate to HomeownerScreen
+                >
                     <Text style={styles.buttonText}>Homeowner</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('ChooseSignUp')} // Navigate to InteriorDesignFirmScreen
+                >
                     <Text style={styles.buttonText}>Interior Design Firm</Text>
                 </TouchableOpacity>
                 <View style={styles.bottomSpacer} />
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.3)', // Optional: Semi-transparent overlay to make content readable
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
         padding: 20,
         borderRadius: 10,
     },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         marginBottom: 20,
         textAlign: 'center',
-        fontFamily: 'EuclidCircularA-Bold', // Apply the custom font here
+        fontFamily: 'EuclidCircularA-Bold',
     },
     button: {
         backgroundColor: '#00696C',
