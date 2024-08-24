@@ -40,7 +40,7 @@ const SignInScreen = () => {
             }
 
             if (storedData.email === lowerCaseEmail && storedData.password === password) {
-                navigation.navigate('HomeownerDashboard');
+                navigation.navigate('MyTabs');
                 setErrorMessage('');
             } else {
                 setErrorMessage('Incorrect email or password');

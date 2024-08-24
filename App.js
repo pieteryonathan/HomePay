@@ -5,14 +5,99 @@ import SplashScreen from './Modules/SplashScreenView';
 import ChooseRoleScreen from './Modules/ChooseRoleScreenView';
 import ChooseSignUpScreen from './Modules/ChooseSignUpScreenView';
 import SignUpScreen from './Modules/SignUpScreenView';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import SignInScreen from './Modules/SignInScreenView';
 import HomeownerDashboardScreen from './Modules/HomeownerDashboardScreenView';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Icon } from 'react-native-elements';
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+
+function MyTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          let label;
+
+          if (route.name === 'Dashboard') {
+            iconName = 'space-dashboard';
+            label = 'Dashboard';
+          } else if (route.name === 'Projects') {
+            iconName = 'folder-open';
+            label = 'Projects';
+          } else if (route.name === 'Settings') {
+            iconName = 'settings';
+            label = 'Settings';
+          }
+
+          return (
+            <View
+              style={{
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <Icon name={iconName} size={size} color={color} />
+              </View>
+              <Text
+                style={[
+                  styles.label,
+                  focused && styles.labelFocused,
+                ]}
+              >
+                {label}
+              </Text>
+            </View>
+          );
+        },
+        tabBarActiveTintColor: '#5F5F5F',
+        tabBarInactiveTintColor: '#5F5F5F',
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          borderTopWidth: 0,
+          height: 96,
+        },
+        headerShown: false,
+        tabBarShowLabel: false,
+      })}
+    >
+      <Tab.Screen name="Dashboard" component={HomeownerDashboardScreen} />
+      <Tab.Screen name="Projects" component={ChooseRoleScreen} />
+      <Tab.Screen name="Settings" component={ChooseSignUpScreen} />
+    </Tab.Navigator>
+  );
+}
+
+function MainStack() {
+  return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ChooseRole" component={ChooseRoleScreen} />
+        <Stack.Screen name="ChooseSignUp" component={ChooseSignUpScreen} />
+        <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="HomeownerDashboard" component={HomeownerDashboardScreen} />
+        <Stack.Screen name="MyTabs" component={MyTabs} options={{ headerShown: false }} />
+      </Stack.Navigator>
+  );
+}
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = React.useState(true);
+  const [fontsLoaded] = useFonts({
+    'EuclidCircularA-Bold': require('./assets/fonts/EuclidCircularABold.ttf'),
+    'EuclidCircularA-SemiBold': require('./assets/fonts/EuclidCircularASemiBold.ttf'),
+    'EuclidCircularA-Medium': require('./assets/fonts/EuclidCircularAMedium.ttf'),
+  });
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,21 +116,44 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="ChooseRole" component={ChooseRoleScreen} />
-        <Stack.Screen name="ChooseSignUp" component={ChooseSignUpScreen} />
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="HomeownerDashboard" component={HomeownerDashboardScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <NavigationContainer >
+      <MainStack />
+    </NavigationContainer >
   );
 }
 
 const styles = StyleSheet.create({
   splashContainer: {
     flex: 1,
-    backgroundColor: '#fff', // Optional: Set a background color for the splash screen
+    backgroundColor: '#fff', 
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 32,
+    marginBottom: 4,
+  },
+  iconContainerFocused: {
+    backgroundColor: '#EEF5FF',
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width:56,
+    height: 32,
+    marginBottom: 4,
+  },
+  label: {
+    fontSize: 12,
+    fontFamily: 'EuclidCircularA-Medium',
+    textAlign: 'center', 
+    overflow: 'hidden', 
+    width: 80,
+  },
+  labelFocused: {
+    fontSize: 12,
+    fontFamily: 'EuclidCircularA-Bold',
+    textAlign: 'center',
+    overflow: 'hidden',
+    width: 80,
   },
 });

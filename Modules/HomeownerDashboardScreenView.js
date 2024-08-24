@@ -1,14 +1,35 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
+import { useFonts } from 'expo-font';
+import iconTransferMoney from '../assets/icon_transfer_money.png';
+import iconSendMoney from '../assets/icon_send_money.png';
+import iconRecieveMoney from '../assets/icon_recieve_money.png';
+import iconAddMoney from '../assets/icon_add_money.png'
 
 export default function HomeownerDashboardScreen() {
+
+    const [fontsLoaded] = useFonts({
+        'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
+        'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
+        'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
+        'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
+    });
+
     return (
         <View style={styles.container}>
             <ScrollView style={styles.body}>
                 <View style={styles.header}>
-                    <Text style={styles.homeownerText}>Homeowner</Text>
-                    <Text style={styles.nameText}>Nicolette #1234</Text>
+                    <View style={styles.headerHomeowner}>
+                        <Text style={styles.homeownerText}>Homeowner</Text>
+                        <View style={styles.spacer} />
+                        <Icon name="notifications" size={32} color="#ffffff" />
+                    </View>
+                    <View style={styles.headerNameandTag}>
+                        <Text style={styles.nameText}>Nicolette</Text>
+                        <Text style={styles.tagText}>#1234</Text>
+                        <View style={styles.spacer} />
+                    </View>
                     <View style={styles.balanceContainer}>
                         <Text style={styles.balanceText}>Available Balance</Text>
                         <Text style={styles.amountText}>$20,000</Text>
@@ -19,14 +40,14 @@ export default function HomeownerDashboardScreen() {
                 <View style={styles.containerWallet}>
                     <View style={styles.actions}>
                         <TouchableOpacity style={styles.actionButton}>
-                            <Icon name="add" size={24} color="#000" />
+                            <Image source={iconAddMoney} style={styles.icon} />
                             <Text style={styles.actionText}>Add Money</Text>
                         </TouchableOpacity>
 
                         <View style={styles.verticalLine} />
 
                         <TouchableOpacity style={styles.actionButton}>
-                            <Icon name="send" size={24} color="#000" />
+                            <Image source={iconTransferMoney} style={styles.icon} />
                             <Text style={styles.actionText}>Transfer Money</Text>
                         </TouchableOpacity>
                     </View>
@@ -34,13 +55,19 @@ export default function HomeownerDashboardScreen() {
                     <View style={styles.transactions}>
                         <Text style={styles.sectionTitle}>Transactions</Text>
                         <View style={styles.transactionRow}>
-                            <Icon name="arrow-upward" size={24} color="red" />
-                            <Text style={styles.transactionText}>Transfer Money to Fadhil</Text>
+                            <Image source={iconSendMoney} style={styles.iconTransaction} />
+                            <View style={styles.transactionContainer}>
+                                <Text style={styles.transactionText}>Transfer Money to Fadhil</Text>
+                                <Text style={styles.transactionText}>09/25/23</Text>
+                            </View>
                             <Text style={styles.transactionAmount}>-$200,000</Text>
                         </View>
                         <View style={styles.transactionRow}>
-                            <Icon name="arrow-downward" size={24} color="green" />
-                            <Text style={styles.transactionText}>Add Money from DBS</Text>
+                            <Image source={iconRecieveMoney} style={styles.iconTransaction} />
+                            <View style={styles.transactionContainer}>
+                                <Text style={styles.transactionText}>Add Money from DBS</Text>
+                                <Text style={styles.transactionText}>09/25/23</Text>
+                            </View>
                             <Text style={styles.transactionAmount}>+$200,000</Text>
                         </View>
                         <TouchableOpacity>
@@ -58,7 +85,12 @@ export default function HomeownerDashboardScreen() {
                     </View>
                     
                     <View style={styles.projectRow}>
-                        <Text style={styles.projectText}>Renovation for Stephen’s House</Text>
+
+                        <View style={styles.headerProject}>
+                            <Text style={styles.projectText}>Renovation for Stephen’s House</Text>
+                            <View style={styles.spacer} />
+                            <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
+                        </View>
 
                         <View style={styles.containerMakePayment}>
                             <View style={styles.textContainerMakePayment}>
@@ -66,31 +98,21 @@ export default function HomeownerDashboardScreen() {
                                 <Text style={styles.trancheText}>Tranche 1: 20%</Text>
                             </View>
                             <View style={styles.spacer} />
-                            <Button title="Make Payment" buttonStyle={styles.paymentButton} />
+                            <Button title="Make Payment" buttonStyle={styles.paymentButton} titleStyle={styles.paymentButtonText} />
+                        </View>
+
+                        <View style={styles.spacerLine} />
+
+                        <View style={styles.escrowWallet}>
+                            <Text style={styles.escrowText}>Escrow Wallet</Text>
+                            <Icon name="info-outline" size={24} color="#002021" />
+                            <View style={styles.spacer} />
+                            <Text style={styles.escrowAmount}>$20,000</Text>
                         </View>
 
                     </View>
-                    <View style={styles.escrowWallet}>
-                        <Text style={styles.escrowText}>Escrow Wallet</Text>
-                        <Text style={styles.escrowAmount}>$20,000</Text>
-                    </View>
                 </View>
             </ScrollView>
-
-            <View style={styles.footer}>
-                <TouchableOpacity style={styles.footerButton}>
-                    <Icon name="dashboard" size={24} color="#000" />
-                    <Text style={styles.footerText}>Dashboard</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerButton}>
-                    <Icon name="work" size={24} color="#000" />
-                    <Text style={styles.footerText}>Projects</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerButton}>
-                    <Icon name="settings" size={24} color="#000" />
-                    <Text style={styles.footerText}>Settings</Text>
-                </TouchableOpacity>
-            </View>
         </View>
     );
 }
@@ -99,7 +121,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f8f8f8',
-        marginBottom: 16,
     },
     header: {
         backgroundColor: '#00696C',
@@ -109,19 +130,33 @@ const styles = StyleSheet.create({
         paddingTop: 72,
         paddingBottom: 64
     },
+    headerHomeowner: {
+        flexDirection: 'row',
+    },
     homeownerText: {
         color: '#ffffff',
-        fontSize: 18,
+        fontFamily: 'EuclidCircularA-Medium',
+        fontSize: 16,
+    },
+    headerNameandTag: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        marginTop: 5,
+        marginBottom: 24,
     },
     nameText: {
         color: '#ffffff',
         fontSize: 24,
-        fontWeight: 'bold',
-        marginTop: 5,
-        marginBottom: 24,
+        fontFamily: 'EuclidCircularA-Bold',
+        marginRight: 7,
+    },
+    tagText: {
+        color: '#DAE4E4',
+        fontSize: 16,
+        fontFamily: 'EuclidCircularA-Medium',
     },
     balanceContainer: {
-        width: 255,
+        minWidth: 255,
         backgroundColor: '#FFFFFF',
         paddingVertical: 16,
         paddingHorizontal: 56,
@@ -134,19 +169,21 @@ const styles = StyleSheet.create({
         color: '#002021',
         fontSize: 16,
         textAlign: 'center',
+        fontFamily: 'EuclidCircularA-Medium',
     },
     amountText: {
         color: '#002021',
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginTop: 5,
+        fontSize: 56,
+        marginTop: 8,
         textAlign: 'center',
+        fontFamily: 'EuclidCircularA-Bold',
     },
     currencyText: {
         color: '#002021',
-        fontSize: 16,
+        fontSize: 12,
         marginTop: 5,
         textAlign: 'center',
+        fontFamily: 'EuclidCircularA-Regular',
     },
     body: {
         padding: 0,
@@ -163,10 +200,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 20,
     },
+    icon: {
+        width: 32,
+        height: 32,
+    },
+    iconTransaction: {
+        width: 28,
+        height: 28,
+    },
     actionText: {
         marginTop: 8,
-        fontSize: 14,
-        color: '#000',
+        fontSize: 12,
+        color: '#002021',
+        fontFamily: 'EuclidCircularA-Regular',
     },
     verticalLine: {
         width: 1,
@@ -184,33 +230,43 @@ const styles = StyleSheet.create({
         marginBottom: 32,
     },
     transactions: {
-        marginBottom: 16,
+        marginBottom: 16
     },
     sectionTitle: {
         fontSize: 18,
-        fontWeight: 'bold',
+        color: '#002021',
+        fontFamily: 'EuclidCircularA-Bold',
         marginBottom: 8,
     },
     transactionRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        alignSelf: 'center',
         marginBottom: 10,
+    },
+    transactionContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        marginLeft: 8,
     },
     transactionText: {
         flex: 1,
-        marginLeft: 10,
-        fontSize: 16,
-        color: '#000',
+        fontFamily: 'EuclidCircularA-Regular',
+        fontSize: 12,
+        color: '#002021',
+        marginBottom: 8,
     },
     transactionAmount: {
-        fontSize: 16,
-        color: '#000',
+        fontSize: 12,
+        color: '#002021',
+        fontFamily: 'EuclidCircularA-Bold',
     },
     viewAllText: {
-        color: '#39685e',
+        color: '#00629D',
         fontSize: 16,
         textAlign: 'center',
+        fontFamily: 'EuclidCircularA-Medium',
         marginTop: 10,
     },
     headerProject: {
@@ -231,61 +287,62 @@ const styles = StyleSheet.create({
     containerMakePayment: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginBottom: 24,
     },
     textContainerMakePayment: {
         flexDirection: 'column',
         marginBottom: 10,
     },
     projectText: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        color: '#002021',
+        fontSize: 16,
+        fontFamily: 'EuclidCircularA-Bold',
         marginBottom: 24,
     },
     nextPaymentText: {
+        color: '#002021',
         fontSize: 16,
+        fontFamily: 'EuclidCircularA-Medium',
         marginTop: 10,
     },
     trancheText: {
+        color: '#002021',
         fontSize: 16,
+        fontFamily: 'EuclidCircularA-Medium',
         marginTop: 5,
-        color: '#666',
     },
     paymentButton: {
-        backgroundColor: '#39685e',
-        marginTop: 10,
+        backgroundColor: '#00696C',
+        paddingVertical: 16,
+        paddingHorizontal: 32,
+        borderRadius: 100,
+    },
+    paymentButtonText: {
+        fontSize: 16,
+        color: '#ffffff',
+        fontFamily: 'EuclidCircularA-SemiBold'
+    },
+    spacerLine: {
+        backgroundColor: '#BEC8C8',
+        height: 1,
     },
     escrowWallet: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 16,
         backgroundColor: '#ffffff',
-        padding: 20,
         borderRadius: 10,
     },
     escrowText: {
-        fontSize: 16,
-        color: '#666',
+        fontSize: 18,
+        color: '#002021',
+        fontFamily: 'EuclidCircularA-Regular',
+        marginRight: 8,
     },
     escrowAmount: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#000',
-    },
-    footer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderTopWidth: 1,
-        borderColor: '#ddd',
-    },
-    footerButton: {
-        alignItems: 'center',
-    },
-    footerText: {
-        fontSize: 16,
-        color: '#000',
-        marginTop: 5,
+        fontSize: 24,
+        fontFamily: 'EuclidCircularA-Bold',
+        color: '#002021',
     },
 });
