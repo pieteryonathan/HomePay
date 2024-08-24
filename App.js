@@ -2,9 +2,11 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from './Modules/SplashScreenView';
-import SignUpScreen from './Modules/SignUpScreenView';
+import ChooseRoleScreen from './Modules/ChooseRoleScreenView';
 import ChooseSignUpScreen from './Modules/ChooseSignUpScreenView';
+import SignUpScreen from './Modules/SignUpScreenView';
 import { View, StyleSheet } from 'react-native';
+import SignInScreen from './Modules/SignInScreenView';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,8 +32,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="ChooseRole" component={ChooseRoleScreen} />
         <Stack.Screen name="ChooseSignUp" component={ChooseSignUpScreen} />
+        <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

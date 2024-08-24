@@ -52,13 +52,13 @@ export default function ChooseSignUpScreen({ navigation }) {
                         <Text style={styles.text}>{slide.text}</Text>
                         <TouchableOpacity
                             style={styles.buttonLogin}
-                            onPress={() => console.log('Button A Pressed')}
+                            onPress={() => navigation.navigate('SignIn')}
                         >
                             <Text style={styles.buttonLoginText}>Log In</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.buttonSignUp}
-                            onPress={() => console.log('Button B Pressed')}
+                            onPress={() => navigation.navigate('SignUp')}
                         >
                             <Text style={styles.buttonSignUpText}>Sign Up</Text>
                         </TouchableOpacity>
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 24,
-        fontWeight: 700,
         color: '#00696C',
         textAlign: 'center',
         marginBottom: 40,
@@ -150,7 +149,6 @@ const styles = StyleSheet.create({
     buttonSignUpText: {
         color: '#00696C',
         fontSize: 16,
-        fontWeight: 600,
         fontFamily: 'EuclidCircularA-SemiBold'
     },
     bottomSpacer: {

@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
 
-const SignUpScreen = () => {
+const SignInScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [reEnterPasswordVisible, setReEnterPasswordVisible] = useState(false);
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [reEnterPassword, setReEnterPassword] = useState('');
 
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
@@ -21,27 +18,20 @@ const SignUpScreen = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    const toggleReEnterPasswordVisibility = () => {
-        setReEnterPasswordVisible(!reEnterPasswordVisible);
+    const handleSignIn = () => {
+        // Handle sign-in logic here
+        console.log('Sign In', { email, password });
     };
 
-    const handleSignUp = () => {
-        // Handle sign-up logic here
-        console.log('Sign Up', { name, email, password, reEnterPassword });
+    const handleForgotPassword = () => {
+        // Handle forgot password logic here
+        console.log('Forgot Password');
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Sign Up</Text>
-            <Text style={styles.subtitle}>Set your password to keep your account safe!</Text>
-
-            <TextInput
-                style={styles.input}
-                placeholder="Name as per NRIC*"
-                value={name}
-                onChangeText={setName}
-                placeholderTextColor="#42474E"
-            />
+            
+            <Image source={require('../assets/icon.png')} style={styles.icon} />
 
             <TextInput
                 style={styles.input}
@@ -55,7 +45,7 @@ const SignUpScreen = () => {
             <View style={styles.passwordContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="Create Password*"
+                    placeholder="Password*"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!passwordVisible}
@@ -70,28 +60,14 @@ const SignUpScreen = () => {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.passwordContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Re-enter Password*"
-                    value={reEnterPassword}
-                    onChangeText={setReEnterPassword}
-                    secureTextEntry={!reEnterPasswordVisible}
-                    placeholderTextColor="#42474E" // Setting placeholder color
-                />
-                <TouchableOpacity onPress={toggleReEnterPasswordVisibility} style={styles.eyeButton}>
-                    <Icon
-                        name={reEnterPasswordVisible ? 'visibility-off' : 'visibility'}
-                        size={24}
-                        color="#000"
-                    />
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={handleForgotPassword}>
+                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </TouchableOpacity>
 
             <View style={styles.spacer} />
 
-            <TouchableOpacity style={styles.submitButton} onPress={handleSignUp}>
-                <Text style={styles.submitButtonText}>Submit</Text>
+            <TouchableOpacity style={styles.verifyButton} onPress={handleSignIn}>
+                <Text style={styles.verifyButtonText}>Verify</Text>
             </TouchableOpacity>
         </View>
     );
@@ -102,18 +78,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         paddingHorizontal: 20,
-        marginTop: 76,
+        marginTop: 189,
         marginBottom: 64,
     },
-    title: {
-        fontFamily: 'Inter-Regular',
-        fontSize: 32,
-        marginBottom: 16,
-    },
-    subtitle: {
-        fontFamily: 'EuclidCircularA-Regular',
-        fontSize: 16,
-        marginBottom: 48,
+    icon: {
+        width: 200,
+        height: 200,
+        alignSelf: 'center',
+        marginBottom: 72,
+        resizeMode: 'contain',
     },
     input: {
         borderWidth: 1,
@@ -124,7 +97,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 5,
         fontFamily: 'EuclidCircularA-Regular',
-        fontSize: 16, 
+        fontSize: 16,
         color: '#42474E',
     },
     passwordContainer: {
@@ -140,7 +113,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    submitButton: {
+    forgotPasswordText: {
+        fontFamily: 'EuclidCircularA-SemiBold',
+        fontSize: 16,
+        color: '#00696C',
+        textAlign: 'left',
+    },
+    spacer: {
+        flex: 1,
+    },
+    verifyButton: {
         backgroundColor: '#00696C',
         borderRadius: 100,
         paddingVertical: 15,
@@ -148,14 +130,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 20,
     },
-    submitButtonText: {
+    verifyButtonText: {
         fontFamily: 'EuclidCircularA-SemiBold',
         fontSize: 16,
         color: '#fff',
     },
-    spacer: {
-        flex: 1,
-    }
 });
 
-export default SignUpScreen;
+export default SignInScreen;
