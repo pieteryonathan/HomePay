@@ -11,6 +11,7 @@ import HomeownerDashboardScreen from './Modules/HomeownerDashboardScreenView';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
+import DesignerDashboardScreen from './Modules/DesignerDashboardScreenView';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,7 +72,7 @@ function MyTabs() {
         tabBarShowLabel: false,
       })}
     >
-      <Tab.Screen name="Dashboard" component={HomeownerDashboardScreen} />
+      <Tab.Screen name="Dashboard" component={DesignerDashboardScreen} />
       <Tab.Screen name="Projects" component={ChooseRoleScreen} />
       <Tab.Screen name="Settings" component={ChooseSignUpScreen} />
     </Tab.Navigator>
@@ -86,6 +87,7 @@ function MainStack() {
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="HomeownerDashboard" component={HomeownerDashboardScreen} />
+        <Stack.Screen name="DesignerDashboard" component={DesignerDashboardScreen} />
         <Stack.Screen name="MyTabs" component={MyTabs} options={{ headerShown: false }} />
       </Stack.Navigator>
   );
