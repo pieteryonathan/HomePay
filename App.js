@@ -7,6 +7,7 @@ import ChooseSignUpScreen from './Modules/ChooseSignUpScreenView';
 import SignUpScreen from './Modules/SignUpScreenView';
 import { View, StyleSheet } from 'react-native';
 import SignInScreen from './Modules/SignInScreenView';
+import HomeownerDashboardScreen from './Modules/HomeownerDashboardScreenView';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ export default function App() {
         <Stack.Screen name="ChooseSignUp" component={ChooseSignUpScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="HomeownerDashboard" component={HomeownerDashboardScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

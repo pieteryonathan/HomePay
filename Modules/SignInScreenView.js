@@ -3,12 +3,14 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } fro
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
 import { getItem } from '../Utils/AsyncStorage';
+import { useNavigation } from '@react-navigation/native';
 
 const SignInScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const navigation = useNavigation();
 
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
@@ -38,7 +40,7 @@ const SignInScreen = () => {
             }
 
             if (storedData.email === lowerCaseEmail && storedData.password === password) {
-                Alert.alert('Success', 'Sign in successful');
+                navigation.navigate('HomeownerDashboard');
                 setErrorMessage('');
             } else {
                 setErrorMessage('Incorrect email or password');
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
         marginTop: 189,
         marginBottom: 64,
     },

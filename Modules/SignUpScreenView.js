@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
         marginTop: 76,
         marginBottom: 64,
     },
