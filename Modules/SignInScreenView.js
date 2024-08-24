@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
+import { getItem } from '../Utils/AsyncStorage';
 
 const SignInScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [fontsLoaded] = useFonts({
+        'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
         'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
         'Inter-Regular': require('../assets/fonts/InterRegular.ttf'),
@@ -18,26 +21,53 @@ const SignInScreen = () => {
         setPasswordVisible(!passwordVisible);
     };
 
-    const handleSignIn = () => {
-        // Handle sign-in logic here
-        console.log('Sign In', { email, password });
+    const validateAndSignIn = async () => {
+        const lowerCaseEmail = email.toLowerCase();
+
+        if (!lowerCaseEmail || !password) {
+            setErrorMessage('Please enter both email and password');
+            return;
+        }
+
+        try {
+            const storedData = await getItem('user_data');
+
+            if (!storedData) {
+                setErrorMessage('No user data found');
+                return;
+            }
+
+            if (storedData.email === lowerCaseEmail && storedData.password === password) {
+                Alert.alert('Success', 'Sign in successful');
+                setErrorMessage('');
+            } else {
+                setErrorMessage('Incorrect email or password');
+            }
+        } catch (error) {
+            setErrorMessage('There was an error signing in');
+        }
     };
 
     const handleForgotPassword = () => {
-        // Handle forgot password logic here
         console.log('Forgot Password');
     };
 
     return (
         <View style={styles.container}>
-            
-            <Image source={require('../assets/icon.png')} style={styles.icon} />
+            <Image
+                source={require('../assets/icon.png')}
+                style={[styles.icon, { marginBottom: errorMessage ? 24 : 72 }]}
+            />
+
+            {errorMessage ? (
+                <Text style={styles.errorText}>{errorMessage}</Text>
+            ) : null}
 
             <TextInput
                 style={styles.input}
-                placeholder="Email*"
+                placeholder="Email/Phone Number*"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => setEmail(text.toLowerCase())}
                 keyboardType="email-address"
                 placeholderTextColor="#42474E"
             />
@@ -66,7 +96,7 @@ const SignInScreen = () => {
 
             <View style={styles.spacer} />
 
-            <TouchableOpacity style={styles.verifyButton} onPress={handleSignIn}>
+            <TouchableOpacity style={styles.verifyButton} onPress={validateAndSignIn}>
                 <Text style={styles.verifyButtonText}>Verify</Text>
             </TouchableOpacity>
         </View>
@@ -85,7 +115,6 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         alignSelf: 'center',
-        marginBottom: 72,
         resizeMode: 'contain',
     },
     input: {
@@ -118,6 +147,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#00696C',
         textAlign: 'left',
+    },
+    errorText: {
+        color: '#BA1A1A',
+        fontFamily: 'EuclidCircularA-Medium',
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 28,
     },
     spacer: {
         flex: 1,

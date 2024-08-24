@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
+import { setItem } from '../Utils/AsyncStorage';
 
 const SignUpScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -25,9 +26,26 @@ const SignUpScreen = () => {
         setReEnterPasswordVisible(!reEnterPasswordVisible);
     };
 
-    const handleSignUp = () => {
-        // Handle sign-up logic here
-        console.log('Sign Up', { name, email, password, reEnterPassword });
+    const validateAndStoreData = async () => {
+        const lowerCaseEmail = email.toLowerCase();
+
+        if (!name || !lowerCaseEmail || !password || !reEnterPassword) {
+            Alert.alert('Error', 'Please fill out all fields');
+            return;
+        }
+
+        if (password !== reEnterPassword) {
+            Alert.alert('Error', 'Passwords do not match');
+            return;
+        }
+
+        const userData = { name, email: lowerCaseEmail, password };
+        try {
+            await setItem('user_data', userData);
+            Alert.alert('Success', 'Sign up successful');
+        } catch (error) {
+            Alert.alert('Error', 'There was an error saving your data');
+        }
     };
 
     return (
@@ -47,7 +65,7 @@ const SignUpScreen = () => {
                 style={styles.input}
                 placeholder="Email*"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => setEmail(text.toLowerCase())}
                 keyboardType="email-address"
                 placeholderTextColor="#42474E"
             />
@@ -77,7 +95,7 @@ const SignUpScreen = () => {
                     value={reEnterPassword}
                     onChangeText={setReEnterPassword}
                     secureTextEntry={!reEnterPasswordVisible}
-                    placeholderTextColor="#42474E" // Setting placeholder color
+                    placeholderTextColor="#42474E"
                 />
                 <TouchableOpacity onPress={toggleReEnterPasswordVisibility} style={styles.eyeButton}>
                     <Icon
@@ -90,7 +108,7 @@ const SignUpScreen = () => {
 
             <View style={styles.spacer} />
 
-            <TouchableOpacity style={styles.submitButton} onPress={handleSignUp}>
+            <TouchableOpacity style={styles.submitButton} onPress={validateAndStoreData}>
                 <Text style={styles.submitButtonText}>Submit</Text>
             </TouchableOpacity>
         </View>
@@ -124,7 +142,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 5,
         fontFamily: 'EuclidCircularA-Regular',
-        fontSize: 16, 
+        fontSize: 16,
         color: '#42474E',
     },
     passwordContainer: {
