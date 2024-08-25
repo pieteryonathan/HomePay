@@ -4,8 +4,10 @@ import { Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import iconTransferMoney from '../assets/icon_transfer_money.png';
 import AuthManager from '../Utils/AuthManager';
+import { useNavigation } from '@react-navigation/native';
 
 export default function DesignerDashboardScreen() {
+    const navigation = useNavigation();
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
@@ -90,10 +92,13 @@ export default function DesignerDashboardScreen() {
                         <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
                     </View>
 
-                    <View style={styles.containerProjectSection}>
+                    <TouchableOpacity
+                        style={styles.containerProjectSection}
+                        onPress={() => navigation.navigate('ProjectDetails')}
+                    >
                         <Text style={styles.projectSectionTitle}>View All Projects</Text>
                         <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={styles.spacerLine} />
 
