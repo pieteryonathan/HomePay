@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Switch } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import iconTransferMoney from '../assets/icon_transfer_money.png';
 import AuthManager from '../Utils/AuthManager';
 
-
 export default function DesignerDashboardScreen() {
-
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
         'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
         'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
+        'EuclidCircularA-MediumItalic': require('../assets/fonts/EuclidCircularAMediumItalic.ttf'),
     });
 
     const [userName, setUserName] = useState('');
@@ -28,12 +27,16 @@ export default function DesignerDashboardScreen() {
         fetchUserName();
     }, []);
 
+    if (!fontsLoaded) {
+        return null; // or some loading indicator
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView style={styles.body}>
                 <View style={styles.header}>
                     <View style={styles.headerHomeowner}>
-                        <Text style={styles.homeownerText}>Internior Designer</Text>
+                        <Text style={styles.homeownerText}>Interior Designer</Text>
                         <View style={styles.spacer} />
                         <Icon name="notifications" size={32} color="#ffffff" />
                     </View>
@@ -45,21 +48,21 @@ export default function DesignerDashboardScreen() {
                     <View style={styles.balanceContainer}>
                         <Text style={styles.balanceText}>Whole Wallet</Text>
                         <Text style={styles.amountText}>$20,000</Text>
-                        <Text style={styles.textSubTitle}>Singapore Dollar (SGD)</Text>
+                        <Text style={styles.textSubtitle}>Singapore Dollar (SGD)</Text>
                     </View>
                 </View>
 
                 <View style={styles.containerWallet}>
                     <View style={styles.actions}>
                         <TouchableOpacity style={styles.actionButton}>
-                            <Text style={[styles.textSubTitle, { marginBottom: 8 }]}>Recieved</Text>
+                            <Text style={[styles.textSubtitle, { marginBottom: 8 }]}>Received</Text>
                             <Text style={styles.sectionTitle}>$50,000.00</Text>
                         </TouchableOpacity>
 
                         <View style={styles.verticalLine} />
 
                         <TouchableOpacity style={styles.actionButton}>
-                            <Text style={[styles.textSubTitle, { marginBottom: 8 }]}>In Escrow</Text>
+                            <Text style={[styles.textSubtitle, { marginBottom: 8 }]}>In Escrow</Text>
                             <Text style={styles.sectionTitle}>$50,000.00</Text>
                         </TouchableOpacity>
 
@@ -73,45 +76,80 @@ export default function DesignerDashboardScreen() {
                 </View>
 
                 <View style={styles.project}>
+                    <Text style={styles.sectionTitle}>Project Approval Alert</Text>
+                    <Text style={styles.sectionEmptyProject}>No projects to approve at the moment</Text>
+                    <View style={styles.spacerLine} />
 
-                    <View style={styles.headerProject}>
-                        <Text style={styles.sectionTitle}>Projects</Text>
-                        <View style={styles.spacer} />
-                        <Icon name="arrow-forward" size={24} color="#002021" />
+                    <View style={styles.containerProjectSection}>
+                        <Text style={styles.projectSectionTitle}>Create a new project</Text>
+                        <Icon name="add" size={24} color="#5F5F5F" />
                     </View>
 
-                    <View style={styles.projectRow}>
-
-                        <View style={styles.headerProject}>
-                            <Text style={styles.projectText}>Renovation for Stephen’s House</Text>
-                            <View style={styles.spacer} />
-                            <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
-                        </View>
-
-                        <View style={styles.containerMakePayment}>
-                            <View style={styles.textContainerMakePayment}>
-                                <Text style={styles.nextPaymentText}>Next Payment</Text>
-                                <Text style={styles.trancheText}>Tranche 1: 20%</Text>
-                            </View>
-                            <View style={styles.spacer} />
-                            <Button title="Make Payment" buttonStyle={styles.paymentButton} titleStyle={styles.paymentButtonText} />
-                        </View>
-
-                        <View style={styles.spacerLine} />
-
-                        <View style={styles.escrowWallet}>
-                            <Text style={styles.escrowText}>Escrow Wallet</Text>
-                            <Icon name="info-outline" size={24} color="#002021" />
-                            <View style={styles.spacer} />
-                            <Text style={styles.escrowAmount}>$20,000</Text>
-                        </View>
-
+                    <View style={styles.containerProjectSection}>
+                        <Text style={styles.projectSectionTitle}>View Reject Requests</Text>
+                        <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
                     </View>
+
+                    <View style={styles.containerProjectSection}>
+                        <Text style={styles.projectSectionTitle}>View All Projects</Text>
+                        <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
+                    </View>
+
+                    <View style={styles.spacerLine} />
+
+                    <SubAccountsView />
                 </View>
             </ScrollView>
         </View>
     );
 }
+
+const SubAccountsView = () => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded);
+    };
+
+    return (
+        <View style={styles.containerSubAccount}>
+            <TouchableOpacity onPress={toggleExpand} style={styles.headerSubAccount}>
+                <Text style={styles.headerTextSubAccount}>Sub-Accounts</Text>
+                <View style={styles.spacer}/>
+                <Icon name="add" size={24} color="#5F5F5F" />
+                <Icon
+                    name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+                    size={32}
+                    color="#5F5F5F"
+                />
+            </TouchableOpacity>
+            {isExpanded && (
+                <View style={styles.subAccountsList}>
+                    <SubAccountItem subId="Sub ID 1" />
+                    <SubAccountItem subId="Sub ID 2" />
+                    <SubAccountItem subId="Sub ID 1" />
+                </View>
+            )}
+        </View>
+    );
+};
+
+const SubAccountItem = ({ subId }) => {
+    const [isEnabled, setIsEnabled] = useState(false);
+
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+    return (
+        <View style={styles.subAccountItem}>
+            <Text style={styles.subAccountText}>{subId}</Text>
+            <Switch
+                trackColor={{ false: "#BEC8C8", true: "#00696C" }}
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+            />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -200,10 +238,6 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
     },
-    iconTransaction: {
-        width: 28,
-        height: 28,
-    },
     actionText: {
         marginTop: 8,
         fontSize: 12,
@@ -228,10 +262,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#002021',
         fontFamily: 'EuclidCircularA-Bold',
-        marginBottom: 8,
+        marginBottom: 16,
     },
-    headerProject: {
-        flexDirection: 'row',
+    sectionEmptyProject: {
+        fontSize: 16,
+        color: '#002021',
+        fontFamily: 'EuclidCircularA-MediumItalic',
+        marginBottom: 16,
     },
     spacer: {
         flex: 1,
@@ -240,70 +277,58 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         padding: 24,
     },
-    projectRow: {
-        backgroundColor: '#ffffff',
-        padding: 16,
-        borderRadius: 10,
-    },
-    containerMakePayment: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 24,
-    },
-    textContainerMakePayment: {
-        flexDirection: 'column',
-        marginBottom: 10,
-    },
-    projectText: {
-        color: '#002021',
-        fontSize: 16,
-        fontFamily: 'EuclidCircularA-Bold',
-        marginBottom: 24,
-    },
-    nextPaymentText: {
-        color: '#002021',
-        fontSize: 16,
-        fontFamily: 'EuclidCircularA-Medium',
-        marginTop: 10,
-    },
-    trancheText: {
-        color: '#002021',
-        fontSize: 16,
-        fontFamily: 'EuclidCircularA-Medium',
-        marginTop: 5,
-    },
-    paymentButton: {
-        backgroundColor: '#00696C',
-        paddingVertical: 16,
-        paddingHorizontal: 32,
-        borderRadius: 100,
-    },
-    paymentButtonText: {
-        fontSize: 16,
-        color: '#ffffff',
-        fontFamily: 'EuclidCircularA-SemiBold'
-    },
     spacerLine: {
         backgroundColor: '#BEC8C8',
         height: 1,
+        marginBottom: 16,
     },
-    escrowWallet: {
+    projectSectionTitle: {
+        fontSize: 18,
+        color: '#002021',
+        fontFamily: 'EuclidCircularA-Bold',
+    },
+    containerProjectSection: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        padding: 16,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderRadius: 10,
+        marginBottom: 16,
+    },
+    containerSubAccount: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 16,
+    },
+    headerSubAccount: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 16,
-        backgroundColor: '#ffffff',
-        borderRadius: 10,
     },
-    escrowText: {
+    headerTextSubAccount: {
+        fontSize: 16,
+        color: '#002021',
+        fontFamily: 'EuclidCircularA-Medium',
+    },
+    toggleIcon: {
+        fontSize: 16,
+    },
+    subAccountsList: {
+        marginTop: 10,
+    },
+    subAccountItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+    },
+    subAccountText: {
         fontSize: 18,
         color: '#002021',
-        fontFamily: 'EuclidCircularA-Regular',
-        marginRight: 8,
-    },
-    escrowAmount: {
-        fontSize: 24,
         fontFamily: 'EuclidCircularA-Bold',
-        color: '#002021',
     },
 });
