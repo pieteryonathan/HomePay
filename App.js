@@ -14,6 +14,7 @@ import { useFonts } from 'expo-font';
 import DesignerDashboardScreen from './Modules/DesignerDashboardScreenView';
 import ProjectDetailsScreen from './Modules/ProjectDetailsScreenView';
 import SettingScreen from './Modules/SettingScreenView';
+import EditInformationScreen from './Modules/EditInformationScreenView';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -158,6 +159,7 @@ function MainStack() {
         <Stack.Screen name="DesignerDashboard" component={DesignerDashboardScreen} />
         <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
         <Stack.Screen name="Setting" component={SettingScreen} />
+        <Stack.Screen name="EditInformation" component={EditInformationScreen} />
         <Stack.Screen name="HomeownerTabs" component={HomeownerTabs} options={{ headerShown: false }} />
         <Stack.Screen name="DesignerTabs" component={DesignerTabs} options={{ headerShown: false }} />
       </Stack.Navigator>

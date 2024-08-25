@@ -1,5 +1,5 @@
 import React, { version } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
@@ -43,10 +43,13 @@ const SettingScreen = () => {
 
                 <View style={styles.sectionAccountSetting}>
                     <Text style={styles.headerSetting}>Account Settings</Text>
-                    <View style={styles.containerSetting}>
+                    <TouchableOpacity
+                        style={styles.containerSetting}
+                        onPress={() => navigation.navigate('EditInformation')}
+                    >
                         <Text style={styles.settingTitle}>Edit Information</Text>
-                        <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
-                    </View>
+                        <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" onPress={() => navigation.navigate('EditInformation')}/>
+                    </TouchableOpacity>
 
                     <View style={styles.containerSetting}>
                         <Text style={styles.settingTitle}>Notification Settings</Text>
