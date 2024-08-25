@@ -23,11 +23,12 @@ class AuthManager {
     static async signOut() {
         try {
             await AsyncStorage.removeItem('current_user');
+            return true; // Indicate that sign-out was successful
         } catch (error) {
             console.error('Error during sign-out:', error);
+            return false; // Indicate that sign-out failed
         }
     }
-
     static async getCurrentUser() {
         try {
             const user = await AsyncStorage.getItem('current_user');

@@ -2,14 +2,31 @@ import React, { version } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { useFonts } from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
+import AuthManager from '../Utils/AuthManager';
 
-const SettingScreen = ({ navigation }) => {
+const SettingScreen = () => {
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
         'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
         'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
     });
+    const navigation = useNavigation();
+
+    const signOut = async () => {
+        try {
+            const signOutSuccessful = await AuthManager.signOut();
+
+            if (signOutSuccessful) {
+                navigation.navigate('SignIn');
+            } else {
+                console.log('Error Signing Out');
+            }
+        } catch (error) {
+            console.log('Error Signing Out');
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -58,7 +75,7 @@ const SettingScreen = ({ navigation }) => {
                     </View>
                 </View>
 
-                <Button title="Logout" buttonStyle={styles.logoutButton} titleStyle={styles.logoutButtonText} />
+                <Button title="Logout" buttonStyle={styles.logoutButton} titleStyle={styles.logoutButtonText} onPress={signOut} />
 
             </ScrollView>
 
