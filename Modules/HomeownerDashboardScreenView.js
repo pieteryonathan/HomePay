@@ -6,9 +6,11 @@ import iconTransferMoney from '../assets/icon_transfer_money.png';
 import iconSendMoney from '../assets/icon_send_money.png';
 import iconRecieveMoney from '../assets/icon_recieve_money.png';
 import iconAddMoney from '../assets/icon_add_money.png'
-import AuthManager from '../Utils/AuthManager'; // Adjust path as necessary
+import AuthManager from '../Utils/AuthManager';
+import { useNavigation } from '@react-navigation/native';  // To access navigation prop
 
 export default function HomeownerDashboardScreen() {
+    const navigation = useNavigation();
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
@@ -22,7 +24,7 @@ export default function HomeownerDashboardScreen() {
         const fetchUserName = async () => {
             const currentUser = await AuthManager.getCurrentUser();
             if (currentUser) {
-                setUserName(currentUser.name || 'Nicolette'); // Use current user's name or default to 'Nicolette'
+                setUserName(currentUser.name || 'Nicolette');
             }
         };
 
@@ -93,14 +95,14 @@ export default function HomeownerDashboardScreen() {
                     <View style={styles.headerProject}>
                         <Text style={styles.sectionTitle}>Projects</Text>
                         <View style={styles.spacer} />
-                        <Icon name="arrow-forward" size={24} color="#002021" />
+                        <Icon name="arrow-forward" size={24} color="#002021" onPress={() => navigation.navigate('ProjectDetails')}/>
                     </View>
 
                     <View style={styles.projectRow}>
                         <View style={styles.headerProject}>
                             <Text style={styles.projectText}>Renovation for Stephen’s House</Text>
                             <View style={styles.spacer} />
-                            <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" />
+                            <Icon name="arrow-forward-ios" size={24} color="#5F5F5F" onPress={() => navigation.navigate('ProjectDetails')} />
                         </View>
 
                         <View style={styles.containerMakePayment}>
