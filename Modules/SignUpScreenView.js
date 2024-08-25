@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 import { setItem } from '../Utils/AsyncStorage';
 import { getItem } from '../Utils/AsyncStorage';
 import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native-elements';
 
 const SignUpScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -133,9 +134,7 @@ const SignUpScreen = () => {
 
             <View style={styles.spacer} />
 
-            <TouchableOpacity style={styles.submitButton} onPress={validateAndStoreData}>
-                <Text style={styles.submitButtonText}>Submit</Text>
-            </TouchableOpacity>
+            <Button title="Submit" buttonStyle={styles.submitButton} titleStyle={styles.submitButtonText} onPress={validateAndStoreData} />
         </View>
     );
 };
@@ -186,9 +185,7 @@ const styles = StyleSheet.create({
     submitButton: {
         backgroundColor: '#00696C',
         borderRadius: 100,
-        paddingVertical: 15,
-        marginHorizontal: 16,
-        alignItems: 'center',
+        paddingVertical: 15,        alignItems: 'center',
         marginTop: 20,
     },
     submitButtonText: {

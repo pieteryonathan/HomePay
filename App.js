@@ -13,6 +13,7 @@ import { Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import DesignerDashboardScreen from './Modules/DesignerDashboardScreenView';
 import ProjectDetailsScreen from './Modules/ProjectDetailsScreenView';
+import SettingScreen from './Modules/SettingScreenView';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -75,7 +76,7 @@ function HomeownerTabs() {
     >
       <Tab.Screen name="Dashboard" component={HomeownerDashboardScreen} />
       <Tab.Screen name="Projects" component={HomeownerDashboardScreen} />
-      <Tab.Screen name="Settings" component={ChooseSignUpScreen} />
+      <Tab.Screen name="Settings" component={SettingScreen} />
     </Tab.Navigator>
   );
 }
@@ -141,7 +142,7 @@ function DesignerTabs() {
       <Tab.Screen name="Dashboard" component={DesignerDashboardScreen} />
       <Tab.Screen name="Reject Requests" component={DesignerDashboardScreen} />
       <Tab.Screen name="All Projects" component={DesignerDashboardScreen} />
-      <Tab.Screen name="Settings" component={ChooseSignUpScreen} />
+      <Tab.Screen name="Settings" component={SettingScreen} />
     </Tab.Navigator>
   );
 }
@@ -155,9 +156,10 @@ function MainStack() {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="HomeownerDashboard" component={HomeownerDashboardScreen} />
         <Stack.Screen name="DesignerDashboard" component={DesignerDashboardScreen} />
+        <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
+        <Stack.Screen name="Setting" component={SettingScreen} />
         <Stack.Screen name="HomeownerTabs" component={HomeownerTabs} options={{ headerShown: false }} />
         <Stack.Screen name="DesignerTabs" component={DesignerTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="ProjectDetails" component={ProjectDetailsScreen} />
       </Stack.Navigator>
   );
 }

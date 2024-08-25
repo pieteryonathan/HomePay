@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
 import AuthManager from '../Utils/AuthManager';
 import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native-elements';
 
 const SignInScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -102,9 +103,7 @@ const SignInScreen = () => {
 
             <View style={styles.spacer} />
 
-            <TouchableOpacity style={styles.verifyButton} onPress={validateAndSignIn}>
-                <Text style={styles.verifyButtonText}>Verify</Text>
-            </TouchableOpacity>
+            <Button title="Verify" buttonStyle={styles.verifyButton} titleStyle={styles.verifyButtonText} onPress={validateAndSignIn} />
         </View>
     );
 };
@@ -168,7 +167,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#00696C',
         borderRadius: 100,
         paddingVertical: 15,
-        marginHorizontal: 16,
         alignItems: 'center',
         marginTop: 20,
     },
