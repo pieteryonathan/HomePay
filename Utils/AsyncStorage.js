@@ -4,25 +4,26 @@ export const setItem = async (key, value) => {
     try {
         await AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-        console.error('Error setting item:', error);
+        console.error('Error saving data', error);
+        throw error; // Optional: rethrow error for higher-level handling
     }
 };
 
 export const getItem = async (key) => {
     try {
         const value = await AsyncStorage.getItem(key);
-        return value != null ? JSON.parse(value) : null;
+        return value ? JSON.parse(value) : [];
     } catch (error) {
-        console.error('Error getting item:', error);
-        return null;
+        console.error('Error retrieving data', error);
+        throw error; // Optional: rethrow error for higher-level handling
     }
 };
 
 export const removeItem = async (key) => {
     try {
         await AsyncStorage.removeItem(key);
-    } catch (error) {
-        console.error('Error removing item:', error);
+    } catch (e) {
+        console.error('Failed to remove the data from storage', e);
     }
 };
 

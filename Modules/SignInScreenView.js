@@ -32,18 +32,28 @@ const SignInScreen = () => {
         }
 
         try {
-            const storedData = await getItem('user_data');
+            const storedUsers = await getItem('user_data');
+            const user = storedUsers.find(user => user.email === lowerCaseEmail);
 
-            if (!storedData) {
-                setErrorMessage('No user data found');
+            if (!user) {
+                setErrorMessage('No user found with this email');
                 return;
             }
 
-            if (storedData.email === lowerCaseEmail && storedData.password === password) {
-                navigation.navigate('MyTabs');
+            if (user.password === password) {
+                const localPart = lowerCaseEmail.split('@')[0];
+
+                if (localPart.includes('regular')) {
+                    navigation.navigate('HomeownerTabs');
+                } else if (localPart.includes('id')) {
+                    navigation.navigate('DesignerTabs');
+                } else {
+                    navigation.navigate('HomeownerTabs');
+                }
+
                 setErrorMessage('');
             } else {
-                setErrorMessage('Incorrect email or password');
+                setErrorMessage('Incorrect password');
             }
         } catch (error) {
             setErrorMessage('There was an error signing in');

@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
-function MyTabs() {
+function HomeownerTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -79,6 +79,72 @@ function MyTabs() {
   );
 }
 
+function DesignerTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          let label;
+
+          if (route.name === 'Dashboard') {
+            iconName = 'space-dashboard';
+            label = 'Dashboard';
+          } else if (route.name === 'Reject Requests') {
+            iconName = 'dangerous';
+            label = 'Reject Requests';
+          } else if (route.name === 'All Projects') {
+            iconName = 'folder-open';
+            label = 'All Projects';
+          } else if (route.name === 'Settings') {
+            iconName = 'settings';
+            label = 'Settings';
+          }
+
+          return (
+            <View
+              style={{
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={[
+                  styles.iconContainer,
+                  focused && styles.iconContainerFocused,
+                ]}
+              >
+                <Icon name={iconName} size={size} color={color} />
+              </View>
+              <Text
+                style={[
+                  styles.label,
+                  focused && styles.labelFocused,
+                ]}
+              >
+                {label}
+              </Text>
+            </View>
+          );
+        },
+        tabBarActiveTintColor: '#5F5F5F',
+        tabBarInactiveTintColor: '#5F5F5F',
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          borderTopWidth: 0,
+          height: 96,
+        },
+        headerShown: false,
+        tabBarShowLabel: false,
+      })}
+    >
+      <Tab.Screen name="Dashboard" component={DesignerDashboardScreen} />
+      <Tab.Screen name="Reject Requests" component={ChooseRoleScreen} />
+      <Tab.Screen name="All Projects" component={ChooseRoleScreen} />
+      <Tab.Screen name="Settings" component={ChooseSignUpScreen} />
+    </Tab.Navigator>
+  );
+}
+
 function MainStack() {
   return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -88,7 +154,8 @@ function MainStack() {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="HomeownerDashboard" component={HomeownerDashboardScreen} />
         <Stack.Screen name="DesignerDashboard" component={DesignerDashboardScreen} />
-        <Stack.Screen name="MyTabs" component={MyTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="HomeownerTabs" component={HomeownerTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="DesignerTabs" component={DesignerTabs} options={{ headerShown: false }} />
       </Stack.Navigator>
   );
 }

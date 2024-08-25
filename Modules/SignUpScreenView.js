@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
 import { setItem } from '../Utils/AsyncStorage';
+import { getItem } from '../Utils/AsyncStorage';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUpScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -11,6 +13,7 @@ const SignUpScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [reEnterPassword, setReEnterPassword] = useState('');
+    const navigation = useNavigation();
 
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
@@ -40,9 +43,31 @@ const SignUpScreen = () => {
         }
 
         const userData = { name, email: lowerCaseEmail, password };
+
         try {
-            await setItem('user_data', userData);
-            Alert.alert('Success', 'Sign up successful');
+            // Retrieve existing user data
+            const existingUsers = await getItem('user_data');
+
+            // Check if email already exists
+            const emailExists = existingUsers.some(user => user.email === lowerCaseEmail);
+            if (emailExists) {
+                Alert.alert('Error', 'Email is already registered');
+                return;
+            }
+
+            // Add new user data
+            await setItem('user_data', [...existingUsers, userData]);
+            console.log('User data saved successfully');
+
+            // Navigate based on email prefix
+            const localPart = lowerCaseEmail.split('@')[0];
+            if (localPart.includes('regular')) {
+                navigation.navigate('HomeownerTabs');
+            } else if (localPart.includes('id')) {
+                navigation.navigate('DesignerTabs');
+            } else {
+                navigation.navigate('HomeownerTabs');
+            }
         } catch (error) {
             Alert.alert('Error', 'There was an error saving your data');
         }
