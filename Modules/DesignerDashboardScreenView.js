@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import iconTransferMoney from '../assets/icon_transfer_money.png';
-import iconSendMoney from '../assets/icon_send_money.png';
-import iconRecieveMoney from '../assets/icon_recieve_money.png';
-import iconAddMoney from '../assets/icon_add_money.png'
+import AuthManager from '../Utils/AuthManager';
+
 
 export default function DesignerDashboardScreen() {
 
@@ -15,6 +14,19 @@ export default function DesignerDashboardScreen() {
         'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
         'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
     });
+
+    const [userName, setUserName] = useState('');
+
+    useEffect(() => {
+        const fetchUserName = async () => {
+            const currentUser = await AuthManager.getCurrentUser();
+            if (currentUser) {
+                setUserName(currentUser.name || 'Nicolette');
+            }
+        };
+
+        fetchUserName();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -26,7 +38,7 @@ export default function DesignerDashboardScreen() {
                         <Icon name="notifications" size={32} color="#ffffff" />
                     </View>
                     <View style={styles.headerNameandTag}>
-                        <Text style={styles.nameText}>Nicolette</Text>
+                        <Text style={styles.nameText}>{userName}</Text>
                         <Text style={styles.tagText}>#1234</Text>
                         <View style={styles.spacer} />
                     </View>

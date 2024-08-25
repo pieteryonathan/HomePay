@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
@@ -6,15 +6,28 @@ import iconTransferMoney from '../assets/icon_transfer_money.png';
 import iconSendMoney from '../assets/icon_send_money.png';
 import iconRecieveMoney from '../assets/icon_recieve_money.png';
 import iconAddMoney from '../assets/icon_add_money.png'
+import AuthManager from '../Utils/AuthManager'; // Adjust path as necessary
 
 export default function HomeownerDashboardScreen() {
-
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
         'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
         'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
     });
+
+    const [userName, setUserName] = useState('');
+
+    useEffect(() => {
+        const fetchUserName = async () => {
+            const currentUser = await AuthManager.getCurrentUser();
+            if (currentUser) {
+                setUserName(currentUser.name || 'Nicolette'); // Use current user's name or default to 'Nicolette'
+            }
+        };
+
+        fetchUserName();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -26,7 +39,7 @@ export default function HomeownerDashboardScreen() {
                         <Icon name="notifications" size={32} color="#ffffff" />
                     </View>
                     <View style={styles.headerNameandTag}>
-                        <Text style={styles.nameText}>Nicolette</Text>
+                        <Text style={styles.nameText}>{userName}</Text>
                         <Text style={styles.tagText}>#1234</Text>
                         <View style={styles.spacer} />
                     </View>
@@ -77,15 +90,13 @@ export default function HomeownerDashboardScreen() {
                 </View>
 
                 <View style={styles.project}>
-
                     <View style={styles.headerProject}>
                         <Text style={styles.sectionTitle}>Projects</Text>
                         <View style={styles.spacer} />
                         <Icon name="arrow-forward" size={24} color="#002021" />
                     </View>
-                    
-                    <View style={styles.projectRow}>
 
+                    <View style={styles.projectRow}>
                         <View style={styles.headerProject}>
                             <Text style={styles.projectText}>Renovation for Stephen’s House</Text>
                             <View style={styles.spacer} />
@@ -109,7 +120,6 @@ export default function HomeownerDashboardScreen() {
                             <View style={styles.spacer} />
                             <Text style={styles.escrowAmount}>$20,000</Text>
                         </View>
-
                     </View>
                 </View>
             </ScrollView>

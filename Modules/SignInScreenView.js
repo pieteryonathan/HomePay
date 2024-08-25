@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
-import { getItem } from '../Utils/AsyncStorage';
+import AuthManager from '../Utils/AuthManager';
 import { useNavigation } from '@react-navigation/native';
 
 const SignInScreen = () => {
@@ -32,15 +32,9 @@ const SignInScreen = () => {
         }
 
         try {
-            const storedUsers = await getItem('user_data');
-            const user = storedUsers.find(user => user.email === lowerCaseEmail);
+            const signInSuccessful = await AuthManager.signIn(lowerCaseEmail, password);
 
-            if (!user) {
-                setErrorMessage('No user found with this email');
-                return;
-            }
-
-            if (user.password === password) {
+            if (signInSuccessful) {
                 const localPart = lowerCaseEmail.split('@')[0];
 
                 if (localPart.includes('regular')) {
@@ -53,7 +47,7 @@ const SignInScreen = () => {
 
                 setErrorMessage('');
             } else {
-                setErrorMessage('Incorrect password');
+                setErrorMessage('Incorrect email or password');
             }
         } catch (error) {
             setErrorMessage('There was an error signing in');

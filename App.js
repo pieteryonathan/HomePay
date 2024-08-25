@@ -72,7 +72,7 @@ function HomeownerTabs() {
         tabBarShowLabel: false,
       })}
     >
-      <Tab.Screen name="Dashboard" component={DesignerDashboardScreen} />
+      <Tab.Screen name="Dashboard" component={HomeownerDashboardScreen} />
       <Tab.Screen name="Projects" component={ChooseRoleScreen} />
       <Tab.Screen name="Settings" component={ChooseSignUpScreen} />
     </Tab.Navigator>
