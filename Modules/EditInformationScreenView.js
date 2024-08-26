@@ -1,31 +1,109 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
+import React, { useState,useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { useFonts } from 'expo-font';
-import { useNavigation } from '@react-navigation/native';
+import AuthManager from '../Utils/AuthManager';
+import { setItem, getItem } from '../Utils/AsyncStorage';
+import { useFocusEffect } from '@react-navigation/native';
 
-const EditInformationScreen = () => {
+const EditInformationScreen = ({ navigation }) => {
     const [fontsLoaded] = useFonts({
         'EuclidCircularA-Bold': require('../assets/fonts/EuclidCircularABold.ttf'),
         'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
         'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
         'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
     });
-    const navigation = useNavigation();
 
-    // State to manage edit mode for each section
     const [personalInfoEdit, setPersonalInfoEdit] = useState(false);
     const [renovationInfoEdit, setRenovationInfoEdit] = useState(false);
     const [passwordEdit, setPasswordEdit] = useState(false);
 
-    // State for each text input field
-    const [clientName, setClientName] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [address, setAddress] = useState('');
-    const [houseType, setHouseType] = useState('');
-    const [keyCollectionDate, setKeyCollectionDate] = useState('');
+    const [renovationAddress, setAddress] = useState('');
+    const [renovationHouseType, setHouseType] = useState('');
+    const [renovationKeyCollectionDate, setKeyCollectionDate] = useState('');
     const [password, setPassword] = useState('');
+
+    useFocusEffect(
+        useCallback(() => {
+            const fetchCurrentUser = async () => {
+                const currentUser = await AuthManager.getCurrentUser();
+                if (currentUser) {
+                    setName(currentUser.name || '');
+                    setEmail(currentUser.email || '');
+                    setPhoneNumber(currentUser.phoneNumber || '');
+                    setAddress(currentUser.renovationAddress || '');
+                    setHouseType(currentUser.renovationHouseType || '');
+                    setKeyCollectionDate(currentUser.renovationKeyCollectionDate || '');
+                    // Do not set password directly for security reasons
+                }
+            };
+
+            fetchCurrentUser();
+        }, [])
+    );
+
+    const handleSave = async () => {
+        try {
+            console.log('Fetching current user...');
+            const currentUser = await AuthManager.getCurrentUser();
+            console.log('Current user:', currentUser);
+
+            if (currentUser) {
+                const { userId } = currentUser;
+                const updatedUser = {
+                    ...currentUser,
+                    name,
+                    email,
+                    phoneNumber,
+                    renovationAddress,
+                    renovationHouseType,
+                    renovationKeyCollectionDate,
+                    password: passwordEdit ? password : currentUser.password,
+                };
+
+                console.log('Updated user data:', updatedUser);
+
+                const storedUsers = await getItem('user_data');
+                const users = storedUsers;
+
+                const updatedUsers = users.map(user =>
+                    user.userId === userId ? updatedUser : user
+                );
+
+
+                console.log('Updated user list:', updatedUsers);
+
+                // Save updated user data
+                console.log('Saving updated user data...');
+                await setItem('user_data', updatedUsers);
+                console.log('User data saved successfully.');
+                await AuthManager.updateUser(updatedUser)
+
+                // Sign out and sign in with updated credentials if password is edited
+                if (passwordEdit) {
+                    console.log('Signing out...');
+                    await AuthManager.signOut();
+                    console.log('Signed out. Attempting to sign in...');
+                    const signInSuccessful = await AuthManager.signIn(email, password);
+                    console.log('Sign-in successful:', signInSuccessful);
+                    if (!signInSuccessful) {
+                        Alert.alert('Error', 'Sign in failed after updating information');
+                        return;
+                    }
+                }
+
+                Alert.alert('Success', 'Information updated successfully');
+            } else {
+                Alert.alert('Error', 'No user is currently signed in');
+            }
+        } catch (error) {
+            Alert.alert('Error', 'There was an error saving your information');
+            console.error('Error saving user information:', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -51,8 +129,8 @@ const EditInformationScreen = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Client Name as per NRIC"
-                            value={clientName}
-                            onChangeText={setClientName}
+                            value={name}
+                            onChangeText={setName}
                             editable={personalInfoEdit}
                         />
                     </View>
@@ -93,7 +171,7 @@ const EditInformationScreen = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Address"
-                            value={address}
+                            value={renovationAddress}
                             onChangeText={setAddress}
                             editable={renovationInfoEdit}
                         />
@@ -103,7 +181,7 @@ const EditInformationScreen = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="House Type"
-                            value={houseType}
+                            value={renovationHouseType}
                             onChangeText={setHouseType}
                             editable={renovationInfoEdit}
                         />
@@ -113,7 +191,7 @@ const EditInformationScreen = () => {
                         <TextInput
                             style={styles.input}
                             placeholder="Key Collection Date"
-                            value={keyCollectionDate}
+                            value={renovationKeyCollectionDate}
                             onChangeText={setKeyCollectionDate}
                             editable={renovationInfoEdit}
                         />
@@ -138,13 +216,13 @@ const EditInformationScreen = () => {
                             placeholderTextColor="#BEC8C8"
                             value={password}
                             onChangeText={setPassword}
-                            secureTextEntry={false}
+                            secureTextEntry={!passwordEdit}
                             editable={passwordEdit}
                         />
                     </View>
                 </View>
 
-                <Button title="Save" buttonStyle={styles.button} titleStyle={styles.buttonText} />
+                <Button title="Save" buttonStyle={styles.button} titleStyle={styles.buttonText} onPress={handleSave} />
             </ScrollView>
         </View>
     );

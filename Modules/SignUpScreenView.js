@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
-import { setItem } from '../Utils/AsyncStorage';
-import { getItem } from '../Utils/AsyncStorage';
+import { setItem, getItem } from '../Utils/AsyncStorage';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-elements';
+import AuthManager from '../Utils/AuthManager';
+import * as Crypto from 'expo-crypto';
 
 const SignUpScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -43,31 +44,42 @@ const SignUpScreen = () => {
             return;
         }
 
-        const userData = { name, email: lowerCaseEmail, password };
+        const userId = Crypto.randomUUID();
+        const userData = {
+            userId,
+            name,
+            email: lowerCaseEmail,
+            password,
+            phoneNumber: '',
+            renovationAddress: '',
+            renovationHouseType: '',
+            renovationKeyCollectionDate: '',
+        };
 
         try {
-            // Retrieve existing user data
-            const existingUsers = await getItem('user_data');
+            const existingUsers = (await getItem('user_data')) || [];
 
-            // Check if email already exists
             const emailExists = existingUsers.some(user => user.email === lowerCaseEmail);
             if (emailExists) {
                 Alert.alert('Error', 'Email is already registered');
                 return;
             }
 
-            // Add new user data
             await setItem('user_data', [...existingUsers, userData]);
-            console.log('User data saved successfully');
 
-            // Navigate based on email prefix
-            const localPart = lowerCaseEmail.split('@')[0];
-            if (localPart.includes('regular')) {
-                navigation.navigate('HomeownerTabs');
-            } else if (localPart.includes('id')) {
-                navigation.navigate('DesignerTabs');
+            const signInSuccessful = await AuthManager.signIn(lowerCaseEmail, password);
+
+            if (signInSuccessful) {
+                const localPart = lowerCaseEmail.split('@')[0];
+                if (localPart.includes('regular')) {
+                    navigation.navigate('HomeownerTabs');
+                } else if (localPart.includes('id')) {
+                    navigation.navigate('DesignerTabs');
+                } else {
+                    navigation.navigate('HomeownerTabs');
+                }
             } else {
-                navigation.navigate('HomeownerTabs');
+                Alert.alert('Error', 'Incorrect email or password');
             }
         } catch (error) {
             Alert.alert('Error', 'There was an error saving your data');
@@ -185,7 +197,8 @@ const styles = StyleSheet.create({
     submitButton: {
         backgroundColor: '#00696C',
         borderRadius: 100,
-        paddingVertical: 15,        alignItems: 'center',
+        paddingVertical: 15,
+        alignItems: 'center',
         marginTop: 20,
     },
     submitButtonText: {

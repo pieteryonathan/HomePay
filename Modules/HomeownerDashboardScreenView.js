@@ -7,7 +7,7 @@ import iconSendMoney from '../assets/icon_send_money.png';
 import iconRecieveMoney from '../assets/icon_recieve_money.png';
 import iconAddMoney from '../assets/icon_add_money.png'
 import AuthManager from '../Utils/AuthManager';
-import { useNavigation } from '@react-navigation/native';  // To access navigation prop
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeownerDashboardScreen() {
     const navigation = useNavigation();

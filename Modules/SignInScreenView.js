@@ -36,16 +36,20 @@ const SignInScreen = () => {
             const signInSuccessful = await AuthManager.signIn(lowerCaseEmail, password);
 
             if (signInSuccessful) {
-                const localPart = lowerCaseEmail.split('@')[0];
-
-                if (localPart.includes('regular')) {
-                    navigation.navigate('HomeownerTabs');
-                } else if (localPart.includes('id')) {
-                    navigation.navigate('DesignerTabs');
+                // Assuming the `current_user` data has a `role` property to determine navigation
+                const currentUser = await AuthManager.getCurrentUser();
+                if (currentUser) {
+                    const localPart = lowerCaseEmail.split('@')[0];
+                    if (localPart.includes('regular')) {
+                        navigation.navigate('HomeownerTabs');
+                    } else if (localPart.includes('id')) {
+                        navigation.navigate('DesignerTabs');
+                    } else {
+                        navigation.navigate('HomeownerTabs');
+                    }
                 } else {
-                    navigation.navigate('HomeownerTabs');
+                    setErrorMessage('User data not found');
                 }
-
                 setErrorMessage('');
             } else {
                 setErrorMessage('Incorrect email or password');
@@ -72,7 +76,7 @@ const SignInScreen = () => {
 
             <TextInput
                 style={styles.input}
-                placeholder="Email/Phone Number*"
+                placeholder="Email*"
                 value={email}
                 onChangeText={(text) => setEmail(text.toLowerCase())}
                 keyboardType="email-address"
@@ -103,7 +107,7 @@ const SignInScreen = () => {
 
             <View style={styles.spacer} />
 
-            <Button title="Verify" buttonStyle={styles.verifyButton} titleStyle={styles.verifyButtonText} onPress={validateAndSignIn} />
+            <Button title="Sign In" buttonStyle={styles.verifyButton} titleStyle={styles.verifyButtonText} onPress={validateAndSignIn} />
         </View>
     );
 };
