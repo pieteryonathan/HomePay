@@ -51,13 +51,14 @@ const EditInformationScreen = ({ navigation }) => {
             console.log('Fetching current user...');
             const currentUser = await AuthManager.getCurrentUser();
             console.log('Current user:', currentUser);
+            const lowerCaseEmail = email.toLowerCase();
 
             if (currentUser) {
                 const { userId } = currentUser;
                 const updatedUser = {
                     ...currentUser,
                     name,
-                    email,
+                    email: lowerCaseEmail,
                     phoneNumber,
                     renovationAddress,
                     renovationHouseType,
@@ -141,7 +142,7 @@ const EditInformationScreen = ({ navigation }) => {
                             style={styles.input}
                             placeholder="Email"
                             value={email}
-                            onChangeText={setEmail}
+                            onChangeText={(text) => setEmail(text.toLowerCase())}
                             editable={personalInfoEdit}
                         />
                     </View>
