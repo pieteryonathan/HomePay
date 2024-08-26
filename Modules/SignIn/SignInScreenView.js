@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
-import AuthManager from '../Utils/AuthManager';
+import AuthManager from '../../Utils/AuthManager';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-elements';
+import styles from './SignInStyle';
 
 const SignInScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -14,10 +15,10 @@ const SignInScreen = () => {
     const navigation = useNavigation();
 
     const [fontsLoaded] = useFonts({
-        'EuclidCircularA-Medium': require('../assets/fonts/EuclidCircularAMedium.ttf'),
-        'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
-        'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
-        'Inter-Regular': require('../assets/fonts/InterRegular.ttf'),
+        'EuclidCircularA-Medium': require('../../assets/fonts/EuclidCircularAMedium.ttf'),
+        'EuclidCircularA-SemiBold': require('../../assets/fonts/EuclidCircularASemiBold.ttf'),
+        'EuclidCircularA-Regular': require('../../assets/fonts/EuclidCircularARegular.ttf'),
+        'Inter-Regular': require('../../assets/fonts/InterRegular.ttf'),
     });
 
     const togglePasswordVisibility = () => {
@@ -36,7 +37,6 @@ const SignInScreen = () => {
             const signInSuccessful = await AuthManager.signIn(lowerCaseEmail, password);
 
             if (signInSuccessful) {
-                // Assuming the `current_user` data has a `role` property to determine navigation
                 const currentUser = await AuthManager.getCurrentUser();
                 if (currentUser) {
                     const localPart = lowerCaseEmail.split('@')[0];
@@ -50,7 +50,6 @@ const SignInScreen = () => {
                 } else {
                     setErrorMessage('User data not found');
                 }
-                setErrorMessage('');
             } else {
                 setErrorMessage('Incorrect email or password');
             }
@@ -66,7 +65,7 @@ const SignInScreen = () => {
     return (
         <View style={styles.container}>
             <Image
-                source={require('../assets/icon.png')}
+                source={require('../../assets/icon.png')}
                 style={[styles.icon, { marginBottom: errorMessage ? 24 : 72 }]}
             />
 
@@ -107,78 +106,14 @@ const SignInScreen = () => {
 
             <View style={styles.spacer} />
 
-            <Button title="Sign In" buttonStyle={styles.verifyButton} titleStyle={styles.verifyButtonText} onPress={validateAndSignIn} />
+            <Button
+                title="Sign In"
+                buttonStyle={styles.verifyButton}
+                titleStyle={styles.verifyButtonText}
+                onPress={validateAndSignIn}
+            />
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 24,
-        marginTop: 189,
-        marginBottom: 64,
-    },
-    icon: {
-        width: 200,
-        height: 200,
-        alignSelf: 'center',
-        resizeMode: 'contain',
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingHorizontal: 10,
-        paddingRight: 50,
-        height: 56,
-        marginBottom: 10,
-        borderRadius: 5,
-        fontFamily: 'EuclidCircularA-Regular',
-        fontSize: 16,
-        color: '#42474E',
-    },
-    passwordContainer: {
-        position: 'relative',
-        marginBottom: 10,
-    },
-    eyeButton: {
-        position: 'absolute',
-        right: 10,
-        top: 8,
-        height: 40,
-        width: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    forgotPasswordText: {
-        fontFamily: 'EuclidCircularA-SemiBold',
-        fontSize: 16,
-        color: '#00696C',
-        textAlign: 'left',
-    },
-    errorText: {
-        color: '#BA1A1A',
-        fontFamily: 'EuclidCircularA-Medium',
-        fontSize: 16,
-        textAlign: 'center',
-        marginBottom: 28,
-    },
-    spacer: {
-        flex: 1,
-    },
-    verifyButton: {
-        backgroundColor: '#00696C',
-        borderRadius: 100,
-        paddingVertical: 15,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    verifyButtonText: {
-        fontFamily: 'EuclidCircularA-SemiBold',
-        fontSize: 16,
-        color: '#fff',
-    },
-});
 
 export default SignInScreen;

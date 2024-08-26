@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useFonts } from 'expo-font';
-import { setItem, getItem } from '../Utils/AsyncStorage';
+import { setItem, getItem } from '../../Utils/AsyncStorage';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-elements';
-import AuthManager from '../Utils/AuthManager';
+import AuthManager from '../../Utils/AuthManager';
 import * as Crypto from 'expo-crypto';
+import styles from './SignUpStyle';
 
 const SignUpScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -18,9 +19,9 @@ const SignUpScreen = () => {
     const navigation = useNavigation();
 
     const [fontsLoaded] = useFonts({
-        'EuclidCircularA-SemiBold': require('../assets/fonts/EuclidCircularASemiBold.ttf'),
-        'EuclidCircularA-Regular': require('../assets/fonts/EuclidCircularARegular.ttf'),
-        'Inter-Regular': require('../assets/fonts/InterRegular.ttf'),
+        'EuclidCircularA-SemiBold': require('../../assets/fonts/EuclidCircularASemiBold.ttf'),
+        'EuclidCircularA-Regular': require('../../assets/fonts/EuclidCircularARegular.ttf'),
+        'Inter-Regular': require('../../assets/fonts/InterRegular.ttf'),
     });
 
     const togglePasswordVisibility = () => {
@@ -150,65 +151,5 @@ const SignUpScreen = () => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 24,
-        marginTop: 76,
-        marginBottom: 64,
-    },
-    title: {
-        fontFamily: 'Inter-Regular',
-        fontSize: 32,
-        marginBottom: 16,
-    },
-    subtitle: {
-        fontFamily: 'EuclidCircularA-Regular',
-        fontSize: 16,
-        marginBottom: 48,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingHorizontal: 10,
-        paddingRight: 50,
-        height: 56,
-        marginBottom: 10,
-        borderRadius: 5,
-        fontFamily: 'EuclidCircularA-Regular',
-        fontSize: 16,
-        color: '#42474E',
-    },
-    passwordContainer: {
-        position: 'relative',
-        marginBottom: 10,
-    },
-    eyeButton: {
-        position: 'absolute',
-        right: 10,
-        top: 8,
-        height: 40,
-        width: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    submitButton: {
-        backgroundColor: '#00696C',
-        borderRadius: 100,
-        paddingVertical: 15,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    submitButtonText: {
-        fontFamily: 'EuclidCircularA-SemiBold',
-        fontSize: 16,
-        color: '#fff',
-    },
-    spacer: {
-        flex: 1,
-    }
-});
 
 export default SignUpScreen;

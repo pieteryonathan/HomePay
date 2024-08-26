@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashScreen from './Modules/SplashScreenView';
-import ChooseRoleScreen from './Modules/ChooseRoleScreenView';
-import ChooseSignUpScreen from './Modules/ChooseSignUpScreenView';
-import SignUpScreen from './Modules/SignUpScreenView';
+import SplashScreen from './Modules/SplashScreen/SplashScreenView';
+import ChooseRoleScreen from './Modules/ChooseRole/ChooseRoleScreenView';
+import ChooseSignUpScreen from './Modules/ChooseSignUp/ChooseSignUpScreenView';
+import SignUpScreen from './Modules/SignUp/SignUpScreenView';
 import { View, StyleSheet, Text } from 'react-native';
-import SignInScreen from './Modules/SignInScreenView';
-import HomeownerDashboardScreen from './Modules/HomeownerDashboardScreenView';
+import SignInScreen from './Modules/SignIn/SignInScreenView';
+import HomeownerDashboardScreen from './Modules/HomeownerDashboard/HomeownerDashboardScreenView';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
-import DesignerDashboardScreen from './Modules/DesignerDashboardScreenView';
-import ProjectDetailsScreen from './Modules/ProjectDetailsScreenView';
-import SettingScreen from './Modules/SettingScreenView';
-import EditInformationScreen from './Modules/EditInformationScreenView';
+import DesignerDashboardScreen from './Modules/DesignerDashboard/DesignerDashboardScreenView';
+import ProjectDetailsScreen from './Modules/ProjectDetail/ProjectDetailsScreenView';
+import SettingScreen from './Modules/Setting/SettingScreenView';
+import EditInformationScreen from './Modules/EditInformation/EditInformationScreenView';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -222,13 +222,13 @@ const styles = StyleSheet.create({
     fontFamily: 'EuclidCircularA-Medium',
     textAlign: 'center', 
     overflow: 'hidden', 
-    width: 80,
+    width: 160,
   },
   labelFocused: {
     fontSize: 12,
     fontFamily: 'EuclidCircularA-Bold',
     textAlign: 'center',
     overflow: 'hidden',
-    width: 80,
+    width: 160,
   },
 });

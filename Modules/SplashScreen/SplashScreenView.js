@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Image, StyleSheet, View } from 'react-native';
-import icon from '../assets/icon.png';
+import { Animated, Image, View } from 'react-native';
+import styles from './SplashScreenStyle';
+import icon from '../../assets/icon.png';
 
 export default function SplashScreen() {
-    const fadeAnim = useRef(new Animated.Value(0)).current; 
+    const fadeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         Animated.timing(
@@ -24,21 +25,3 @@ export default function SplashScreen() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#00696C1C',
-    },
-    imageContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    image: {
-        width: 240,
-        height: 240,
-        resizeMode: 'contain',
-    },
-});
