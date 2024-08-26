@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import styles from './ProjectDetailStyle';

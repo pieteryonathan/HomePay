@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#F3F4F6', // Background color similar to the image
+        backgroundColor: '#F3F4F6',
     },
     header: {
         fontSize: 24,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         fontFamily: 'EuclidCircularA-SemiBold',
     },
     overlayContainer: {
-        position: 'relative', // Ensure the container allows absolute positioning
+        position: 'relative',
     },
     overlay: {
         position: 'absolute',
@@ -134,9 +134,9 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: '#FCFCFF', // Overlay color
-        opacity: 0.8, // Adjust opacity if needed
-        zIndex: 1, // Ensure the overlay is above other content
+        backgroundColor: '#FCFCFF',
+        opacity: 0.8,
+        zIndex: 1,
     },
 });
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import iconTransferMoney from '../../assets/icon_transfer_money.png';
@@ -7,7 +7,7 @@ import iconSendMoney from '../../assets/icon_send_money.png';
 import iconRecieveMoney from '../../assets/icon_recieve_money.png';
 import iconAddMoney from '../../assets/icon_add_money.png'
 import AuthManager from '../../Utils/AuthManager';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import styles from './HomeownerDashboardStyle';
 
 export default function HomeownerDashboardScreen() {
@@ -21,16 +21,18 @@ export default function HomeownerDashboardScreen() {
 
     const [userName, setUserName] = useState('');
 
-    useEffect(() => {
-        const fetchUserName = async () => {
-            const currentUser = await AuthManager.getCurrentUser();
-            if (currentUser) {
-                setUserName(currentUser.name || 'Nicolette');
-            }
-        };
+    useFocusEffect(
+        useCallback(() => {
+            const fetchCurrentUser = async () => {
+                const currentUser = await AuthManager.getCurrentUser();
+                if (currentUser) {
+                    setUserName(currentUser.name || 'Nicolette');
+                }
+            };
 
-        fetchUserName();
-    }, []);
+            fetchCurrentUser();
+        }, [])
+    );
 
     return (
         <View style={styles.container}>

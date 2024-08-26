@@ -1,5 +1,5 @@
-import React, { version } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';

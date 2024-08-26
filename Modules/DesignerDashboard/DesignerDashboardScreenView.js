@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Switch } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, ScrollView, Image, TouchableOpacity, Switch } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import iconTransferMoney from '../../assets/icon_transfer_money.png';
 import AuthManager from '../../Utils/AuthManager';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import styles from './DesingerDashboardStyle';
 
 export default function DesignerDashboardScreen() {
@@ -19,16 +19,18 @@ export default function DesignerDashboardScreen() {
 
     const [userName, setUserName] = useState('');
 
-    useEffect(() => {
-        const fetchUserName = async () => {
-            const currentUser = await AuthManager.getCurrentUser();
-            if (currentUser) {
-                setUserName(currentUser.name || 'Nicolette');
-            }
-        };
+    useFocusEffect(
+        useCallback(() => {
+            const fetchCurrentUser = async () => {
+                const currentUser = await AuthManager.getCurrentUser();
+                if (currentUser) {
+                    setUserName(currentUser.name || 'Nicolette');
+                }
+            };
 
-        fetchUserName();
-    }, []);
+            fetchCurrentUser();
+        }, [])
+    );
 
     if (!fontsLoaded) {
         return null; // or some loading indicator

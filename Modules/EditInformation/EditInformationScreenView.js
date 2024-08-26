@@ -1,5 +1,5 @@
 import React, { useState,useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, ScrollView, TextInput, Alert } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { useFonts } from 'expo-font';
 import AuthManager from '../../Utils/AuthManager';
